@@ -1,0 +1,32 @@
+
+
+
+
+#TIPOS-AUDITORIA (Catálogo)
+-> id
+-> nome
+
+#AUDITORIAS (TABELA UNIFICADA)
+-> id
+-> tipo_auditoria_id
+-> analista_nome (Texto livre)
+-> quem_criou_nome (Texto livre)
+-> processo
+-> produto
+-> tarefa_redmine
+-> nome_projeto
+-> data_auditoria
+
+#NAO-CONFORMIDADES (GERENCIADOR / TEMPLATES)
+(Catálogo para facilitar o preenchimento)
+-> id
+-> sigla
+-> descricao
+
+#REGISTRO_NAOCONFORMIDADE_DA_AUDITORIA (Modelo Híbrido)
+-> id
+-> auditoria_id (Liga com a auditoria)
+-> nao_conformidade_id (Liga com o template original para rastreamento)
+-> sigla_registrada (Cópia da sigla da época, para o histórico)
+-> descricao_registrada (Cópia da descrição da época, para o histórico)
+-> nome_analista_responsavel_registrado (Texto livre)
