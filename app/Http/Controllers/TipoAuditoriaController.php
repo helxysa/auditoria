@@ -18,14 +18,11 @@ class TipoAuditoriaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nome' => 'required|string'
+        $validated = $request->validate([
+            'nome' => ['required', 'string', 'max:255', 'unique:tipo_auditorias,nome'],
         ]);
 
-
-        $auditoria = TipoAuditoria::create([
-            'nome' => $request->nome,
-        ]);
+        TipoAuditoria::create($validated);
 
         return redirect()->route('tipos-auditorias-index');
     }

@@ -1,34 +1,33 @@
-import { useForm } from '@inertiajs/react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { AutoForm, AutoFormFieldConfig } from '@/components/ui/auto-form'
 
 export default function FormTipoDeAuditoria() {
-    const { data, setData, post, processing, errors } = useForm({
-        nome: ''
-    })
+    const fields: AutoFormFieldConfig[] = [
+        {
+            name: 'nome',
+            label: 'Nome',
+            type: 'text',
+            required: true,
+        },
+    ]
 
-    const submit = (e: React.FormEvent) => {
-        e.preventDefault();
-        post('/auditorias');
+    const initialData = {
+        nome: ''
     }
 
     return (
-        <div>
-
-            <h2>Criar Novo Tipo de Auditoria</h2>
-            <form onSubmit={submit}>
-                <div>
-                    <label htmlFor="nome">Nome</label>
-                    <input
-                        id='nome'
-                        value={data.nome}
-                        onChange={(e) => setData('nome', e.target.value)}
-                        required
-                    />
-                    {errors.nome && <span style={{color: 'red'}}>{errors.nome}</span>}
-                </div>
-                <button type="submit" disabled={processing}>
-                    {processing ? 'Criando...' : 'Criar'}
-                </button>
-            </form>
-        </div>
+        <Card className="w-full max-w-2xl mx-auto">
+            <CardHeader>
+                <CardTitle>Criar Novo Tipo de Auditoria</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <AutoForm
+                    fields={fields}
+                    initialData={initialData}
+                    onSubmit="/tipo-auditorias"
+                    submitText="Criar"
+                />
+            </CardContent>
+        </Card>
     )
 }

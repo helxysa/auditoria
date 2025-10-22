@@ -11,7 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('nao_conformidades', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('sigla');
+            $table->text('descricao')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -19,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('nao_conformidades');
     }
 };

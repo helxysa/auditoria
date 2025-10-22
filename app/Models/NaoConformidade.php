@@ -6,30 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Auditoria extends Model
+class NaoConformidade extends Model
 {
+    /** @use HasFactory<\Database\Factories\NaoConformidadeFactory> */
     use HasFactory;
 
     protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
-        'tipo_auditorias_id',
-        'quem_criou',
-        'analista_responsavel',
-        'processo',
-        'produto',
-        'tarefa_redmine',
-        'nome_do_projeto'
+        'sigla',
+        'descricao'
     ];
 
     protected $casts = [
-        'quem_criou' => 'string',
-        'analista_responsavel' => 'string',
-        'processo' => 'decimal:2',
-        'produto' => 'decimal:2',
-        'tarefa_redmine' => 'string',
-        'nome_do_projeto' => 'string'
+        'sigla' => 'string',
+        'descricao' => 'string',
     ];
 
     protected static function boot()
