@@ -42,4 +42,21 @@ class Auditoria extends Model
             }
         });
     }
+
+    /**
+     * Tipo de auditoria.
+     */
+    public function tipoAuditoria()
+    {
+        return $this->belongsTo(TipoAuditoria::class, 'tipo_auditorias_id');
+    }
+
+    /**
+     * Não conformidades associadas a esta auditoria.
+     */
+    public function naoConformidades()
+    {
+        return $this->belongsToMany(NaoConformidade::class, 'auditoria_nao_conformidade')
+                    ->using(AuditoriaNaoConformidade::class);
+    }
 }

@@ -14,8 +14,10 @@ class AuditoriaController extends Controller
      */
     public function index()
     {
-        $auditorias = Auditoria::orderBy('id', 'asc')->paginate(10);
-        $tipos = TipoAuditoria::all();
+        $auditorias = Auditoria::with(['tipoAuditoria', 'naoConformidades'])
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+        $tipos = TipoAuditoria::with(['auditorias'])->get();
         return \Inertia\Inertia::render('auditor/auditorias/list-auditorias', [
             'auditorias' => $auditorias,
             'tipos_auditorias' => $tipos

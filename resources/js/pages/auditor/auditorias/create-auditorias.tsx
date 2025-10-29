@@ -20,7 +20,6 @@ interface FormAuditoriaProps {
 
 export default function FormAuditoria({ auditoria, onSuccess }: FormAuditoriaProps) {
     const { tipos_auditorias = [] } = usePage().props as { tipos_auditorias?: any[] };
-    
     const isEditing = !!auditoria
 
     const fields: AutoFormFieldConfig[] = [
@@ -72,7 +71,15 @@ export default function FormAuditoria({ auditoria, onSuccess }: FormAuditoriaPro
         },
     ]
 
-    const initialData = auditoria || {
+    const initialData = isEditing ? {
+        tipo_auditorias_id: auditoria.tipo_auditorias_id,
+        quem_criou: auditoria.quem_criou,
+        analista_responsavel: auditoria.analista_responsavel,
+        processo: auditoria.processo,
+        produto: auditoria.produto,
+        tarefa_redmine: auditoria.tarefa_redmine,
+        nome_do_projeto: auditoria.nome_do_projeto
+    } : {
         tipo_auditorias_id: '',
         quem_criou: '',
         analista_responsavel: '',
@@ -83,20 +90,24 @@ export default function FormAuditoria({ auditoria, onSuccess }: FormAuditoriaPro
     }
 
     return (
-        <Card className="w-full max-w-2xl mx-auto">
-            <CardHeader>
-                <CardTitle>{isEditing ? 'Editar Auditoria' : 'Criar Nova Auditoria'}</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <AutoForm
-                    fields={fields}
-                    initialData={initialData}
-                    onSubmit={isEditing ? `/auditorias/${auditoria.id}` : '/auditorias'}
-                    method={isEditing ? 'put' : 'post'}
-                    submitText={isEditing ? 'Atualizar' : 'Criar'}
-                    onSuccess={onSuccess}
-                />
-            </CardContent>
-        </Card>
+        <div className="w-full p-4 md:p-6 lg:p-8">
+            <Card className="w-full max-w-5xl mx-auto shadow-lg">
+                <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+                    <CardTitle className="text-xl md:text-2xl">
+                        {isEditing ? 'Editar Auditoria' : 'Criar Nova Auditoria'}
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6 lg:p-8">
+                    <AutoForm
+                        fields={fields}
+                        initialData={initialData}
+                        onSubmit={isEditing ? `/auditorias/${auditoria.id}` : '/auditorias'}
+                        method={isEditing ? 'put' : 'post'}
+                        submitText={isEditing ? 'Atualizar' : 'Criar'}
+                        onSuccess={onSuccess}
+                    />
+                </CardContent>
+            </Card>
+        </div>
     )
 }

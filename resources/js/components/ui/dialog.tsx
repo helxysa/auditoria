@@ -38,7 +38,11 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
                 className="fixed inset-0 bg-black/50 backdrop-blur-sm" 
                 onClick={() => onOpenChange(false)}
             />
-            {children}
+            <div data-dialog="true" ref={(el) => {
+                if (el) (el as any).__dialogClose = () => onOpenChange(false)
+            }}>
+                {children}
+            </div>
         </div>
     )
 }
@@ -46,6 +50,21 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
 export function DialogContent({ children, className = '', showClose = true }: DialogContentProps) {
     return (
         <div className={`relative z-50 bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto ${className}`}>
+            {showClose && (
+                <button
+                    onClick={(e) => {
+                        const dialog = e.currentTarget.closest('[data-dialog]')
+                        if (dialog) {
+                            const onClose = (dialog as any).__dialogClose
+                            if (onClose) onClose()
+                        }
+                    }}
+                    className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 disabled:pointer-events-none z-10"
+                >
+                    <X className="h-5 w-5 text-slate-500 hover:text-slate-900" />
+                    <span className="sr-only">Fechar</span>
+                </button>
+            )}
             {children}
         </div>
     )
@@ -77,7 +96,7 @@ export function DialogDescription({ children }: DialogDescriptionProps) {
 
 export function DialogFooter({ children }: DialogFooterProps) {
     return (
-        <div className="px-6 py-4 flex justify-end gap-2 border-t border-slate-200">
+        <div className="px-6 py-4 flex justify-end gap-2">
             {children}
         </div>
     )

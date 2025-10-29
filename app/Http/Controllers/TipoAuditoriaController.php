@@ -10,7 +10,9 @@ class TipoAuditoriaController extends Controller
 {
     public function index()
     {
-        $auditorias = TipoAuditoria::orderBy('id', 'asc')->paginate(10);
+        $auditorias = TipoAuditoria::with(['auditorias'])
+            ->orderBy('id', 'asc')
+            ->paginate(10);
         return \Inertia\Inertia::render('auditor/tiposauditorias/list-tipos-de-auditorias', ['tipo_de_auditorias' => $auditorias]);
     }
 
@@ -29,16 +31,25 @@ class TipoAuditoriaController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $request->validate([
+        $tipo_auditoria = TipoAuditoria::findOrFail($id);
+
+
+
+        $validated = $request->validate([
             'nome' => 'string',
         ]);
 
-        $dados = TipoAuditoria::findOrFail($id);
-        TipoAuditoria::updating($dados);
+
+        $tipo_auditoria->update($validated);
+
+        return redirect()->route('tipos-auditorias-index')->with('Sucess', 'Tipo de Auditoria atualizada com sucesso');
     }
 
     public function destroy(string $id)
     {
-        //
+        $tipoAuditoria = TipoAuditoria::findOrFail($id);
+        $tipoAuditoria->delete();
+
+        return redirect()->route('tipos-auditorias-index');
     }
 }

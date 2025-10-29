@@ -16,12 +16,14 @@ class NaoConformidade extends Model
 
     protected $fillable = [
         'sigla',
-        'descricao'
+        'descricao',
+        'tipo_de_nao_conformiade'
     ];
 
     protected $casts = [
         'sigla' => 'string',
         'descricao' => 'string',
+        'tipo_de_nao_conformidade' => 'string'
     ];
 
     protected static function boot()
@@ -33,5 +35,14 @@ class NaoConformidade extends Model
                 $model->id = Str::uuid();
             }
         });
+    }
+
+    /**
+     * Auditorias associadas a esta não conformidade.
+     */
+    public function auditorias()
+    {
+        return $this->belongsToMany(Auditoria::class, 'auditoria_nao_conformidade')
+            ->using(AuditoriaNaoConformidade::class);
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('sigla');
             $table->text('descricao')->nullable();
+            $table->string('tipo_de_nao_conformiade')->nullable();
             $table->timestamps();
         });
     }

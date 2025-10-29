@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'redmine' => [
+        'url' => env('REDMINE_URL'),
+        'api_key' => env('REDMINE_API_KEY'),
+    ],
+
 ];

@@ -31,4 +31,12 @@ class TipoAuditoria extends Model
             }
         });
     }
+
+    /**
+     * Auditorias deste tipo.
+     */
+    public function auditorias()
+    {
+        return $this->hasMany(Auditoria::class, 'tipo_auditorias_id');
+    }
 }
