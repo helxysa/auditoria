@@ -15,8 +15,8 @@ class DisableCsrfForApi
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Desabilita CSRF para rotas de auditoria
-        if ($request->is('auditorias*')) {
+        // Desabilita CSRF para rotas de auditoria e API do Redmine
+        if ($request->is('auditorias*') || $request->is('api/redmine/*')) {
             $request->session()->regenerateToken();
         }
 
