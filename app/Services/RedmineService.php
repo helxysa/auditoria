@@ -41,7 +41,7 @@ class RedmineService
         try {
             $allIssues = [];
             $offset = 0;
-            $limit = 100; // Máximo permitido pela API
+            $limit = 100;
 
             do {
                 $response = $this->getClient()->get('/issues.json', [
