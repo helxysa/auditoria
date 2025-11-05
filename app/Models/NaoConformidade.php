@@ -17,13 +17,12 @@ class NaoConformidade extends Model
     protected $fillable = [
         'sigla',
         'descricao',
-        'tipo_de_nao_conformiade'
+        'tipo_auditoria_id'
     ];
 
     protected $casts = [
         'sigla' => 'string',
         'descricao' => 'string',
-        'tipo_de_nao_conformidade' => 'string'
     ];
 
     protected static function boot()
@@ -44,5 +43,13 @@ class NaoConformidade extends Model
     {
         return $this->belongsToMany(Auditoria::class, 'auditoria_nao_conformidade')
             ->using(AuditoriaNaoConformidade::class);
+    }
+
+    /**
+     * Tipo de auditoria associado a esta não conformidade.
+     */
+    public function tipoAuditoria()
+    {
+        return $this->belongsTo(TipoAuditoria::class, 'tipo_auditoria_id');
     }
 }

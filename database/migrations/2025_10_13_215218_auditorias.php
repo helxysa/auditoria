@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('auditorias', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('tipo_auditorias_id')->constrained('tipo_auditorias')->onDelete('cascade');
+            $table->string('periodo')->nullable();
             $table->string('quem_criou')->nullable();
             $table->string('analista_responsavel')->nullable();
             $table->decimal('processo');

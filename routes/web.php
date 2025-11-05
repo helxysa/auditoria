@@ -7,8 +7,14 @@ use App\Http\Controllers\AuditoriaController;
 use App\Http\Controllers\NaoConformidadeController;
 use App\Http\Controllers\NaoConformidadeControllerController;
 use App\Http\Controllers\RedmineController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardViewController;
 
+// Dashboard API endpoint (retorna JSON)
+Route::get('/api/dashboard', [DashboardController::class, 'index'])->name('api.dashboard');
 
+// Dashboard View (renderiza Inertia com dados)
+Route::get('/dashboard', [DashboardViewController::class, 'index'])->name('dashboard');
 
 Route::get('/tipo-auditorias', [TipoAuditoriaController::class, 'index'])->name('tipos-auditorias-index');
 Route::post('/tipo-auditorias', [TipoAuditoriaController::class, 'store'])->name('tipos-auditorias-create');

@@ -15,6 +15,7 @@ class Auditoria extends Model
 
     protected $fillable = [
         'tipo_auditorias_id',
+        'periodo',
         'quem_criou',
         'analista_responsavel',
         'processo',
@@ -57,6 +58,6 @@ class Auditoria extends Model
     public function naoConformidades()
     {
         return $this->belongsToMany(NaoConformidade::class, 'auditoria_nao_conformidade')
-                    ->using(AuditoriaNaoConformidade::class);
+            ->using(AuditoriaNaoConformidade::class);
     }
 }

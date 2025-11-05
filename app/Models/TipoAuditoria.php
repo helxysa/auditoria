@@ -39,4 +39,12 @@ class TipoAuditoria extends Model
     {
         return $this->hasMany(Auditoria::class, 'tipo_auditorias_id');
     }
+
+    /**
+     * Não conformidades associadas a este tipo de auditoria.
+     */
+    public function naoConformidades()
+    {
+        return $this->hasMany(NaoConformidade::class, 'tipo_auditoria_id');
+    }
 }

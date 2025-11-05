@@ -20,10 +20,17 @@ interface Auditoria {
     nome_do_projeto: string
 }
 
+interface TipoAuditoria {
+    id: string
+    nome: string
+}
+
 interface NaoConformidade {
     id: string
     sigla: string
     descricao: string | null
+    tipo_auditoria_id?: string | null
+    tipo_auditoria?: TipoAuditoria
     auditorias?: Auditoria[]
 }
 
@@ -37,7 +44,10 @@ interface PaginatedData {
 }
 
 export default function ListagemNaoConformidades(){
-    const { nao_conformidades } = usePage().props as { nao_conformidades: PaginatedData };
+    const { nao_conformidades, tipos_auditoria } = usePage().props as { 
+        nao_conformidades: PaginatedData
+        tipos_auditoria: TipoAuditoria[]
+    };
     const [modal, setModal] = useState(false);
     const [editingNaoConformidade, setEditingNaoConformidade] = useState<NaoConformidade | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -69,7 +79,10 @@ export default function ListagemNaoConformidades(){
 
             <Dialog open={modal} onOpenChange={(open) => !open && setModal(false)}>
                 <DialogContent className="max-w-3xl">
-                    <FormNaoConformidade onSuccess={() => setModal(false)} />
+                    <FormNaoConformidade 
+                        tiposAuditoria={tipos_auditoria}
+                        onSuccess={() => setModal(false)} 
+                    />
                 </DialogContent>
             </Dialog>
 
@@ -77,6 +90,7 @@ export default function ListagemNaoConformidades(){
                 <DialogContent className="max-w-3xl">
                     <FormNaoConformidade
                         naoConformidade={editingNaoConformidade || undefined}
+                        tiposAuditoria={tipos_auditoria}
                         onSuccess={handleCloseEdit}
                     />
                 </DialogContent>
@@ -97,6 +111,7 @@ export default function ListagemNaoConformidades(){
                                 <TableHead>ID</TableHead>
                                 <TableHead>Sigla</TableHead>
                                 <TableHead>Descrição</TableHead>
+                                <TableHead>Tipo de Auditoria</TableHead>
                                 <TableHead>Auditorias Vinculadas</TableHead>
                                 <TableHead className="text-right">Ações</TableHead>
                             </TableRow>
@@ -108,6 +123,15 @@ export default function ListagemNaoConformidades(){
                                         <TableCell className="font-mono text-xs">{naoConformidade.id.substring(0, 8)}...</TableCell>
                                         <TableCell className="font-semibold">{naoConformidade.sigla}</TableCell>
                                         <TableCell>{naoConformidade.descricao || '-'}</TableCell>
+                                        <TableCell>
+                                            {naoConformidade.tipo_auditoria ? (
+                                                <span className="inline-flex items-center rounded-md bg-purple-100 px-2 py-1 text-xs font-medium text-purple-700">
+                                                    {naoConformidade.tipo_auditoria.nome}
+                                                </span>
+                                            ) : (
+                                                <span className="text-slate-400">-</span>
+                                            )}
+                                        </TableCell>
                                         <TableCell>
                                             <span className="inline-flex items-center justify-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
                                                 {naoConformidade.auditorias?.length || 0}
@@ -137,7 +161,7 @@ export default function ListagemNaoConformidades(){
                                 ))
                             ) : (
                                 <TableRow>
-                                    <TableCell colSpan={5} className="text-center text-slate-500">
+                                    <TableCell colSpan={6} className="text-center text-slate-500">
                                         Nenhuma não conformidade encontrada
                                     </TableCell>
                                 </TableRow>

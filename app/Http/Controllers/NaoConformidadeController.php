@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\NaoConformidade;
+use App\Models\TipoAuditoria;
 
 
 class NaoConformidadeController extends Controller
@@ -12,10 +13,16 @@ class NaoConformidadeController extends Controller
     {
 
 
-        $nao_conformidades = NaoConformidade::with(['auditorias'])
+        $nao_conformidades = NaoConformidade::with(['auditorias', 'tipoAuditoria'])
             ->orderBy('id', 'asc')
             ->paginate(10);
-        return \Inertia\Inertia::render('auditor/naoconformidades/list-nao-conformidades', ['nao_conformidades' => $nao_conformidades]);
+        
+        $tipos_auditoria = TipoAuditoria::orderBy('nome', 'asc')->get();
+        
+        return \Inertia\Inertia::render('auditor/naoconformidades/list-nao-conformidades', [
+            'nao_conformidades' => $nao_conformidades,
+            'tipos_auditoria' => $tipos_auditoria
+        ]);
     }
 
 
@@ -25,7 +32,7 @@ class NaoConformidadeController extends Controller
         $validated = $request->validate([
             'sigla' => ['required', 'string', 'max:255', 'unique:nao_conformidades,sigla'],
             'descricao' => ['nullable', 'string'],
-            'tipo_de_nao_conformiade' => ['nullable', 'string'],
+            'tipo_auditoria_id' => ['nullable', 'uuid', 'exists:tipo_auditorias,id'],
         ]);
 
         NaoConformidade::create($validated);
@@ -42,7 +49,7 @@ class NaoConformidadeController extends Controller
         $validated = $request->validate([
             'sigla' => 'string',
             'descricao' => 'nullable|string',
-            'tipo_de_nao_conformiade' => ['nullable', 'st ring'],
+            'tipo_auditoria_id' => ['nullable', 'uuid', 'exists:tipo_auditorias,id'],
 
         ]);
 

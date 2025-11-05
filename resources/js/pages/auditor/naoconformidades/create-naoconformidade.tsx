@@ -1,18 +1,25 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { AutoForm, AutoFormFieldConfig } from '@/components/ui/auto-form'
 
+interface TipoAuditoria {
+    id: string
+    nome: string
+}
+
 interface NaoConformidade {
     id: string
     sigla: string
     descricao: string | null
+    tipo_auditoria_id?: string | null
 }
 
 interface FormNaoConformidadeProps {
     naoConformidade?: NaoConformidade
+    tiposAuditoria: TipoAuditoria[]
     onSuccess?: () => void
 }
 
-export default function FormNaoConformidade({ naoConformidade, onSuccess }: FormNaoConformidadeProps) {
+export default function FormNaoConformidade({ naoConformidade, tiposAuditoria, onSuccess }: FormNaoConformidadeProps) {
     const isEditing = !!naoConformidade
 
     const fields: AutoFormFieldConfig[] = [
@@ -30,14 +37,27 @@ export default function FormNaoConformidade({ naoConformidade, onSuccess }: Form
             required: false,
             placeholder: 'Descreva a não conformidade...',
         },
+        {
+            name: 'tipo_auditoria_id',
+            label: 'Tipo de Auditoria',
+            type: 'select',
+            required: false,
+            options: tiposAuditoria.map(tipo => ({
+                value: tipo.id,
+                label: tipo.nome
+            })),
+            placeholder: 'Selecione o tipo de auditoria...',
+        },
     ]
 
     const initialData = isEditing ? {
         sigla: naoConformidade.sigla,
-        descricao: naoConformidade.descricao || ''
+        descricao: naoConformidade.descricao || '',
+        tipo_auditoria_id: naoConformidade.tipo_auditoria_id || ''
     } : {
         sigla: '',
-        descricao: ''
+        descricao: '',
+        tipo_auditoria_id: ''
     }
 
     return (
